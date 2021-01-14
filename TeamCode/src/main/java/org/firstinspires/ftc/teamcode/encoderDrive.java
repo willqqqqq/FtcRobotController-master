@@ -73,8 +73,7 @@ public class encoderDrive extends LinearOpMode {
         waitForStart();
 
         //------For future use, put the "blocks" inbetween the two lines-----------------------------------------
-            driveForward(.4,24,60);
-            strafeLeft(1,5,60);
+            driveForward(1, 12, 30);
         //-------------------------------------------------------------------------------------------------------
     }
      // Put all new blocks under here
