@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@Autonomous(name = "stackDetector", group = "Teleop")
+@Autonomous(name = "stackDetector", group = "Autonomous")
 public class stackDetector extends OpMode {
 
     OpenCvCamera phoneCam = null;
@@ -28,13 +28,6 @@ public class stackDetector extends OpMode {
 
     @Override
     public void init() {
-
-    }
-
-    @Override
-    public void init_loop()
-    {
-
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
@@ -48,6 +41,11 @@ public class stackDetector extends OpMode {
 
             }
         });
+    }
+
+    @Override
+    public void init_loop()
+    {
 
     }
 
