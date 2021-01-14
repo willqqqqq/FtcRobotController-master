@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.archive;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Linear;
 
-//@Disabled
+@Disabled
 @TeleOp (name = "shootingTele", group = "Tutorials")
 public class shootingTele extends BasicOpMode_Linear
 {

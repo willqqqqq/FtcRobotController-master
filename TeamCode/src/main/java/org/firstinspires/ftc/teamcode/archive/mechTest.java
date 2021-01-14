@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Linear;
-
+@Disabled
 @Autonomous(name = "mechTest", group = "Autonomous")
 public class mechTest extends BasicOpMode_Linear {
 

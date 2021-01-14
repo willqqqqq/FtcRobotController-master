@@ -1,8 +1,10 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.archive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -14,9 +16,12 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
-
+@Disabled
 @Autonomous(name = "stackDetector", group = "Autonomous")
 public class stackDetector extends OpMode {
+
+    private DcMotor fly1;
+    private DcMotor fly2;
 
     OpenCvCamera phoneCam = null;
     static double ringCount = 0;
@@ -28,6 +33,10 @@ public class stackDetector extends OpMode {
 
     @Override
     public void init() {
+
+        fly1 = hardwareMap.dcMotor.get("fly1");
+        fly2 = hardwareMap.dcMotor.get("fly2");
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
@@ -54,13 +63,14 @@ public class stackDetector extends OpMode {
     public void loop()
     {
         if (ringCount == 4){
-
+            fly1.setPower(1);
+            fly2.setPower(1);
         }
         if (ringCount == 1){
-
+            fly1.setPower(1);
         }
         if (ringCount == 0){
-
+            fly2.setPower(1);
         }
     }
 

@@ -21,8 +21,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -36,16 +37,20 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@TeleOp
-public class EasyOpenCVExample extends LinearOpMode
+@Autonomous(name="willAuto2", group="Autonomous")
+public class willAuto2 extends LinearOpMode
 {
     OpenCvInternalCamera phoneCam;
     SkystoneDeterminationPipeline pipeline;
+    private DcMotor fly1;
+    private DcMotor fly2;
+    static double ringCount = 0;
 
     @Override
     public void runOpMode()
     {
-
+        fly1 = hardwareMap.dcMotor.get("fly1");
+        fly2 = hardwareMap.dcMotor.get("fly2");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         pipeline = new SkystoneDeterminationPipeline();
@@ -66,6 +71,17 @@ public class EasyOpenCVExample extends LinearOpMode
         });
 
         waitForStart();
+
+        if (ringCount == 4){
+        fly1.setPower(1);
+        fly2.setPower(1);
+        }
+        if (ringCount == 1){
+            fly1.setPower(1);
+        }
+        if (ringCount == 0){
+            fly2.setPower(1);
+        }
 
         while (opModeIsActive())
         {
@@ -160,10 +176,13 @@ public class EasyOpenCVExample extends LinearOpMode
             position = RingPosition.FOUR; // Record our analysis
             if(avg1 > FOUR_RING_THRESHOLD){
                 position = RingPosition.FOUR;
+                ringCount = 4.0;
             }else if (avg1 > ONE_RING_THRESHOLD){
                 position = RingPosition.ONE;
+                ringCount = 1.0;
             }else{
                 position = RingPosition.NONE;
+                ringCount = 0;
             }
 
             Imgproc.rectangle(
