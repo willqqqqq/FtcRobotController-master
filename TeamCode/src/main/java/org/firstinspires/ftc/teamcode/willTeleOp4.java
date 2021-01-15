@@ -26,10 +26,10 @@ public class willTeleOp4 extends BasicOpMode_Linear
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
-        flyLeft = hardwareMap.dcMotor.get("flyLeft");
-        flyRight = hardwareMap.dcMotor.get("flyRight");
+        //flyLeft = hardwareMap.dcMotor.get("flyLeft");
+        //flyRight = hardwareMap.dcMotor.get("flyRight");
         //armServo = hardwareMap.servo.get("armServo");
-        slideServo = hardwareMap.crservo.get("slideServo");
+        //slideServo = hardwareMap.crservo.get("slideServo");
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
@@ -67,7 +67,7 @@ public class willTeleOp4 extends BasicOpMode_Linear
                 backLeft.setPower(v3);
                 backRight.setPower(v4);
             }
-
+/*
             if (gamepad1.x){
                 flyLeft.setPower(-1);
                 flyRight.setPower(-1);
@@ -83,7 +83,7 @@ public class willTeleOp4 extends BasicOpMode_Linear
             if (gamepad1.dpad_down){
                 slideServo.setPower(-1);
             }
-
+*/
             idle();
         }
 

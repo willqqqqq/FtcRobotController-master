@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Disabled
+
 @Autonomous(name="encoderDrive", group="Autonomous")
 public class encoderDrive extends LinearOpMode {
 
@@ -23,15 +23,15 @@ public class encoderDrive extends LinearOpMode {
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
-    private DcMotor armMotor;
-    private Servo armServo;
-    private CRServo slideServo;
+    //private DcMotor armMotor;
+    //private Servo armServo;
+    //private CRServo slideServo;
     private ElapsedTime runtime = new ElapsedTime();
 
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES = 2.99;     // For figuring circumference
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 2.95276);
+    static final double DRIVE_GEAR_REDUCTION = 20.0;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 2.95276;     // For figuring circumference
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
     //static final double DRIVE_SPEED = 0.6;
     //static final double TURN_SPEED = 0.5;
 
@@ -43,9 +43,9 @@ public class encoderDrive extends LinearOpMode {
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
-        armMotor = hardwareMap.dcMotor.get("armMotor");
+        /*armMotor = hardwareMap.dcMotor.get("armMotor");
         armServo = hardwareMap.servo.get("armServo");
-        slideServo = hardwareMap.crservo.get("slideServo");
+        slideServo = hardwareMap.crservo.get("slideServo");*/
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
@@ -73,7 +73,8 @@ public class encoderDrive extends LinearOpMode {
         waitForStart();
 
         //------For future use, put the "blocks" inbetween the two lines-----------------------------------------
-            driveForward(1, 12, 30);
+            driveForward(1, 48, 30);
+            strafeRight(1,48,30);
         //-------------------------------------------------------------------------------------------------------
     }
      // Put all new blocks under here
@@ -141,7 +142,6 @@ public class encoderDrive extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
@@ -209,7 +209,6 @@ public class encoderDrive extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
@@ -277,7 +276,6 @@ public class encoderDrive extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
@@ -345,7 +343,6 @@ public class encoderDrive extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
@@ -413,11 +410,10 @@ public class encoderDrive extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
-    public void openClaw ()
+    /*public void openClaw ()
     {
         armServo.setPosition(.5);
     }
@@ -448,5 +444,5 @@ public class encoderDrive extends LinearOpMode {
         armMotor.setPower(-1);
         sleep(500);
         armMotor.setPower(0);
-    }
+    }*/
 }

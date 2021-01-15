@@ -1,15 +1,13 @@
-package org.firstinspires.ftc.teamcode.subsystemsCommands;
+package org.firstinspires.ftc.teamcode.archive.subsystemsCommands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-
-import org.firstinspires.ftc.teamcode.subsystemsCommands.willDriveSubsystem;
 
 import java.util.function.DoubleSupplier;
 
 public class willDriveCommand extends CommandBase {
 
     private willDriveSubsystem driveSubsystem;
-    private DoubleSupplier strafe, forward, turn;
+    private DoubleSupplier strafe, forward, turn, heading;
 
     public willDriveCommand(willDriveSubsystem driveSubsystem, DoubleSupplier strafe, DoubleSupplier forward, DoubleSupplier turn){
 
@@ -17,6 +15,7 @@ public class willDriveCommand extends CommandBase {
         this.strafe = strafe;
         this.forward = forward;
         this.turn = turn;
+        this.heading = heading;
 
         addRequirements(driveSubsystem);
 
@@ -24,7 +23,7 @@ public class willDriveCommand extends CommandBase {
     @Override
     public void execute(){
 
-        driveSubsystem.drive(strafe.getAsDouble(), forward.getAsDouble(), turn.getAsDouble());
+        driveSubsystem.drive(strafe.getAsDouble(), forward.getAsDouble(), turn.getAsDouble(), heading.getAsDouble());
 
     }
 }

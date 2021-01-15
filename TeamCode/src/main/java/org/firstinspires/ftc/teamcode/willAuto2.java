@@ -49,9 +49,9 @@ public class willAuto2 extends LinearOpMode
     private ElapsedTime runtime = new ElapsedTime();
 
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES = 2.99;     // For figuring circumference
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 2.95276);
+    static final double DRIVE_GEAR_REDUCTION = 20.0;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 2.95276;     // For figuring circumference
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
     OpenCvInternalCamera phoneCam;
     SkystoneDeterminationPipeline pipeline;
@@ -113,18 +113,17 @@ public class willAuto2 extends LinearOpMode
 
         if (ringCount == 4){
 
-            driveForward(1,12,60);
-            strafeLeft(1,2,12);
+            driveForward(1,24,60);
 
         }
         if (ringCount == 1){
 
-            driveBackward(1,12,60);
+            strafeRight(1,24,60);
 
         }
         if (ringCount == 0){
 
-            strafeLeft(1,12,60);
+            strafeLeft(1,24,60);
 
         }
 
@@ -313,7 +312,6 @@ public class willAuto2 extends LinearOpMode
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
@@ -381,7 +379,6 @@ public class willAuto2 extends LinearOpMode
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
@@ -449,7 +446,6 @@ public class willAuto2 extends LinearOpMode
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
@@ -517,7 +513,6 @@ public class willAuto2 extends LinearOpMode
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
@@ -585,7 +580,6 @@ public class willAuto2 extends LinearOpMode
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);
         }
 
     }
