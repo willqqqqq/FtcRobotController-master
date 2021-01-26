@@ -24,6 +24,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.opencv.core.Core;
@@ -45,6 +46,13 @@ public class willAuto2 extends LinearOpMode
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
+    private DcMotor intake;
+    private DcMotor flyWheel;
+    private DcMotor ringLift;
+    private Servo wobbleLift;
+    private Servo wobbleGrab;
+    private Servo ringGrab;
+    private Servo ringShoot;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -111,20 +119,22 @@ public class willAuto2 extends LinearOpMode
 
         waitForStart();
 
+
+
         if (ringCount == 4){
+            //
 
-            driveForward(1,24,60);
-
+            //
         }
         if (ringCount == 1){
+            //
 
-            strafeRight(1,24,60);
-
+            //
         }
         if (ringCount == 0){
+            //
 
-            strafeLeft(1,24,60);
-
+            //
         }
 
         while (opModeIsActive())
