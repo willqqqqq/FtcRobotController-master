@@ -1,32 +1,13 @@
-/*
- * Copyright (c) 2020 OpenFTC Team
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -38,6 +19,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name="willAuto2", group="Autonomous")
 public class willAuto2 extends LinearOpMode
@@ -53,6 +35,7 @@ public class willAuto2 extends LinearOpMode
     private Servo wobbleGrab;
     private Servo ringGrab;
     private Servo ringShoot;
+    private OpenCvWebcam webcam;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -61,7 +44,6 @@ public class willAuto2 extends LinearOpMode
     static final double WHEEL_DIAMETER_INCHES = 2.95276;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
-    OpenCvInternalCamera phoneCam;
     SkystoneDeterminationPipeline pipeline;
     static double ringCount = 0;
 
@@ -74,6 +56,12 @@ public class willAuto2 extends LinearOpMode
         backRight = hardwareMap.dcMotor.get("backRight");
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
+        flyWheel = hardwareMap.dcMotor.get("flyWheel");
+        flyWheel.setDirection(DcMotor.Direction.REVERSE);
+        intake = hardwareMap.dcMotor.get("intake");
+        wobbleLift = hardwareMap.servo.get("wobbleLift");
+        wobbleGrab = hardwareMap.servo.get("wobbleGrab");
+        ringShoot = hardwareMap.servo.get("ringShoot");
 
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
@@ -99,23 +87,28 @@ public class willAuto2 extends LinearOpMode
         telemetry.update();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         pipeline = new SkystoneDeterminationPipeline();
-        phoneCam.setPipeline(pipeline);
+        webcam.setPipeline(pipeline);
+
+
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
         // out when the RC activity is in portrait. We do our actual image processing assuming
         // landscape orientation, though.
-        phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                webcam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
         });
+
+        wobbleLift.setPosition(.5);
+        wobbleGrab.setPosition(.5);
+        ringShoot.setPosition(.5);
 
         waitForStart();
 
@@ -123,18 +116,140 @@ public class willAuto2 extends LinearOpMode
 
         if (ringCount == 4){
             //
-
+            driveBackward(.5,20,10);
+            strafeRight(.5,8,10);
+            driveBackward(.8,88,10);
+            strafeLeft(.3,30,10);
+            wobbleLift.setPosition(1);
+            sleep(300);
+            wobbleGrab.setPosition(1);
+            strafeRight(.5,30,10);
+            wobbleLift.setPosition(.5);
+            driveForward(.8,95,10);
+            wobbleLift.setPosition(1);
+            strafeLeft(.5,18,10);
+            wobbleGrab.setPosition(.5);
+            sleep(300);
+            wobbleLift.setPosition(.5);
+            strafeRight(.5,22,10);
+            driveBackward(.5,90,10);
+            strafeLeft(.5,20,10);
+            wobbleLift.setPosition(1);
+            sleep(300);
+            wobbleGrab.setPosition(1);
+            strafeRight(.5,18,10);
+            wobbleLift.setPosition(.5);
+            driveForward(.8,60,10);
+            flyWheel.setPower(.8);
+            encoderDrive(.7,43,-43,43,-43,10);
+            strafeRight(.5,10,10);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            driveForward(1,16,10);
+            flyWheel.setPower(0);
             //
+            stop();
         }
         if (ringCount == 1){
             //
-
+            driveBackward(.5,20,10);
+            strafeRight(.5,8,10);
+            driveBackward(.5,68,10);
+            strafeLeft(.3,7,10);
+            wobbleLift.setPosition(1);
+            sleep(300);
+            wobbleGrab.setPosition(1);
+            strafeRight(.3,7,10);
+            wobbleLift.setPosition(.5);
+            driveForward(.5,73,10);
+            wobbleLift.setPosition(1);
+            strafeLeft(.5,18,10);
+            wobbleGrab.setPosition(.5);
+            sleep(300);
+            wobbleLift.setPosition(.5);
+            strafeRight(.5,22,10);
+            driveBackward(.5,68,10);
+            wobbleLift.setPosition(1);
+            sleep(300);
+            wobbleGrab.setPosition(1);
+            strafeRight(.5, 7, 10);
+            wobbleLift.setPosition(.5);
+            driveForward(.7,36,10);
+            flyWheel.setPower(.8);
+            encoderDrive(.7,43,-43,43,-43,10);
+            strafeRight(.5,10,10);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            driveForward(1,16,10);
+            flyWheel.setPower(0);
             //
+            stop();
         }
         if (ringCount == 0){
             //
-
+            driveBackward(.5,68,10);
+            strafeLeft(.3,25,10);
+            wobbleLift.setPosition(1);
+            sleep(300);
+            wobbleGrab.setPosition(1);
+            strafeRight(.3,25,10);
+            wobbleLift.setPosition(.5);
+            driveForward(.5,54,10);
+            wobbleLift.setPosition(1);
+            strafeLeft(.5,12,10);
+            wobbleGrab.setPosition(.5);
+            sleep(300);
+            wobbleLift.setPosition(.5);
+            strafeRight(.5,16,10);
+            driveBackward(.5,53,10);
+            strafeLeft(.5,18,10);
+            wobbleLift.setPosition(1);
+            sleep(300);
+            wobbleGrab.setPosition(1);
+            strafeRight(.3,20,10);
+            wobbleLift.setPosition(.5);
+            driveForward(.5,10,10);
+            flyWheel.setPower(.8);
+            encoderDrive(.5,43,-43,43,-43,10);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            ringShoot.setPosition(1);
+            sleep(500);
+            ringShoot.setPosition(.5);
+            sleep(500);
+            driveForward(1,8,10);
+            flyWheel.setPower(0);
             //
+            stop();
         }
 
         while (opModeIsActive())

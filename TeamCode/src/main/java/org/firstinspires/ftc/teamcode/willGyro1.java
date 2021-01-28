@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -91,7 +90,7 @@ public class willGyro1 extends LinearOpMode {
     private Servo ringGrab;
     private Servo ringShoot;
     private ElapsedTime runtime = new ElapsedTime();
-    private BNO055IMU gyro;
+    private GyroSensor gyro;
 
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 20.0;     // This is < 1.0 if geared UP
@@ -125,9 +124,7 @@ public class willGyro1 extends LinearOpMode {
         intake = hardwareMap.dcMotor.get("intake");
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
-        gyro = hardwareMap.get(BNO055IMU.class, "imu");
-
-
+        gyro = hardwareMap.gyroSensor.get("imu");
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -139,7 +136,7 @@ public class willGyro1 extends LinearOpMode {
         telemetry.addData(">", "Calibrating Gyro");    //
         telemetry.update();
 
-
+        gyro.calibrate();
 
         // make sure the gyro is calibrated before continuing
         while (!isStopRequested() && gyro.isCalibrating())  {
@@ -175,8 +172,6 @@ public class willGyro1 extends LinearOpMode {
         gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
         gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
         gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 inches
-
-        //-------------------
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -256,7 +251,7 @@ public class willGyro1 extends LinearOpMode {
                 frontLeftSpeed = speed - steer;
                 frontRightSpeed = speed + steer;
                 backLeftSpeed = speed - steer;
-                backRightSpeed = speed + steer;
+                backRightSpeed = speed - steer;
 
                 // Normalize speeds if either one exceeds +/- 1.0;
                 max1 = Math.max(Math.abs(frontLeftSpeed), Math.abs(frontRightSpeed));
@@ -266,10 +261,7 @@ public class willGyro1 extends LinearOpMode {
                     frontLeftSpeed /= max1;
                     frontRightSpeed /= max1;
                 }
-                if (max2 > 1.0){
-                    backLeftSpeed /= max2;
-                    backRightTarget /= max2;
-                }
+                if (true)
                 frontLeft.setPower(frontLeftSpeed);
                 frontRight.setPower(frontRightSpeed);
                 backLeft.setPower(backLeftSpeed);
