@@ -46,20 +46,17 @@ public class willTeleOp4 extends BasicOpMode_Linear
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
         flyWheel.setDirection(DcMotorSimple.Direction.REVERSE);
-        GamepadEx gamepadEx1 = new GamepadEx(gamepad1);
-        GamepadEx gamepadEx2 = new GamepadEx(gamepad2);
 
         ringShoot.setPosition(0.5);
 
-        telemetry.addData("speed toggle", "full");
+        wobbleLift.setPosition(.5);
+        wobbleGrab.setPosition(1);
 
         waitForStart();
 
         while(opModeIsActive()) {
 
-            intake.setPower(1);
-
-            flyWheel.setPower(1);
+            ringShoot.setPosition(.5);
 
             double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
@@ -80,18 +77,33 @@ public class willTeleOp4 extends BasicOpMode_Linear
                 backLeft.setPower(v3 * .05);
                 backRight.setPower(v4 * .05);
             }
-            if(gamepad1.right_trigger > .5){
+            if(gamepad2.right_trigger > .5){
                 ringShoot.setPosition(1);
                 sleep(400);
             }
             else{
                 ringShoot.setPosition(0.5);
             }
-            if (gamepad1.cross){
+            if (gamepad2.left_trigger > .5){
+                wobbleGrab.setPosition(1);
+            }
+            if (gamepad2.dpad_up){
+                wobbleLift.setPosition(0);
+            }
+            if (gamepad2.dpad_down){
+                wobbleLift.setPosition(1);
+            }
+            if (gamepad2.dpad_left){
+                wobbleGrab.setPosition(1);
+            }
+            if (gamepad2.dpad_right){
                 wobbleGrab.setPosition(.5);
             }
-            else{
-                wobbleGrab.setPosition(1);
+            if (gamepad2.a){
+                flyWheel.setPower(.8);
+            }
+            if(gamepad2.b){
+                flyWheel.setPower(0);
             }
             idle();
         }
